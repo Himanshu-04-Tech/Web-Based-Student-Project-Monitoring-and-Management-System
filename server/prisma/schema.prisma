@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  // Relations
+  managedDivisions Division[] @relation("FacultyDivisions")
+  group            Group?     @relation("GroupStudents", fields: [groupId], references: [id])
+  groupId          Int?
+}
+
+model Batch {
+  id   Int    @id @default(autoincrement())
+  name String // e.g. "SE 2026"
+
+  division   Division @relation(fields: [divisionId], references: [id])
+  divisionId Int
+
+  groups Group[]
+}
+
+model Division {
+  id   Int    @id @default(autoincrement())
+  name String // e.g. "A", "B"
+
+  faculty   User @relation("FacultyDivisions", fields: [facultyId], references: [id])
+  facultyId Int
+
+  batches Batch[]
+}
+
+model Group {
+  id   Int    @id @default(autoincrement())
+  name String // e.g. "Team 1"
+
+  batch   Batch @relation(fields: [batchId], references: [id])
+  batchId Int
+
+  students   User[]       @relation("GroupStudents")
+  project    Project?
+  attendance Attendance[]
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int   @unique // ensures one project per group
+
+  progress Progress[]
+}
+
+model Progress {
+  id        Int      @id @default(autoincrement())
+  details   String
+  createdAt DateTime @default(now())
+
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+}
+
+model Attendance {
+  id      Int      @id @default(autoincrement())
+  date    DateTime @default(now())
+  present Boolean
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+}
+
+enum Role {
+  FACULTY
+  STUDENT
+}
