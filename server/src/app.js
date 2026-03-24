@@ -46,7 +46,9 @@ app.get(
 const divisionRoutes = require("./routes/divisionRoutes");
 
 app.use("/api/divisions", divisionRoutes);
-
 const batchRoutes = require("./routes/batchRoutes");
 
 app.use("/api/batches", batchRoutes);
+
+console.log("divisionRoutes:", typeof divisionRoutes);
+console.log("batchRoutes:", typeof batchRoutes);
