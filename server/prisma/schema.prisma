@@ -22,19 +22,30 @@ model User {
   createdAt DateTime @default(now())
 
   // Relations
+  attendance Attendance[]
   managedDivisions Division[] @relation("FacultyDivisions")
   group            Group?     @relation("GroupStudents", fields: [groupId], references: [id])
   groupId          Int?
 }
 
+model Student {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  batchId   Int
+  batch     Batch    @relation(fields: [batchId], references: [id])
+  createdAt DateTime @default(now())
+  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   Int?
+}
+
 model Batch {
-  id   Int    @id @default(autoincrement())
-  name String // e.g. "SE 2026"
-
-  division   Division @relation(fields: [divisionId], references: [id])
+  id         Int       @id @default(autoincrement())
+  name       String
   divisionId Int
-
-  groups Group[]
+  division   Division  @relation(fields: [divisionId], references: [id])
+  students   Student[]
+  groups     Group[]
 }
 
 model Division {
@@ -48,15 +59,23 @@ model Division {
 }
 
 model Group {
-  id   Int    @id @default(autoincrement())
-  name String // e.g. "Team 1"
+  id      Int         @id @default(autoincrement())
+  name    String
+  purpose ProjectType
 
-  batch   Batch @relation(fields: [batchId], references: [id])
-  batchId Int
+  joinCode String @unique // 🔥 NEW FIELD
 
-  students   User[]       @relation("GroupStudents")
+  batchId    Int
+  batch      Batch        @relation(fields: [batchId], references: [id])
+  users      User[]       @relation("GroupStudents")
+  students   Student[]
   project    Project?
   attendance Attendance[]
+}
+
+enum ProjectType {
+  COURSE_PROJECT
+  EDI
 }
 
 model Project {
@@ -82,12 +101,15 @@ model Progress {
 }
 
 model Attendance {
-  id      Int      @id @default(autoincrement())
-  date    DateTime @default(now())
-  present Boolean
+  id        Int      @id @default(autoincrement())
+  date      DateTime @default(now())
+  status    String   // "PRESENT" or "ABSENT"
 
-  group   Group @relation(fields: [groupId], references: [id])
-  groupId Int
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  groupId   Int
+  group     Group    @relation(fields: [groupId], references: [id])
 }
 
 enum Role {

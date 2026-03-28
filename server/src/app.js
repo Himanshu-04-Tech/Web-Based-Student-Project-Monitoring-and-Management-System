@@ -52,3 +52,16 @@ app.use("/api/batches", batchRoutes);
 
 console.log("divisionRoutes:", typeof divisionRoutes);
 console.log("batchRoutes:", typeof batchRoutes);
+
+const studentRoutes = require("./routes/studentRoutes");
+app.use("/api/students", studentRoutes);
+
+const groupRoutes = require("./routes/groupRoutes");
+app.use("/api/groups", groupRoutes);
+
+
+const projectRoutes = require("./routes/projectRoutes");
+app.use("/api/projects", projectRoutes);
+
+const attendanceRoutes = require("./routes/attendanceRoutes");
+app.use("/api/attendance", attendanceRoutes);
