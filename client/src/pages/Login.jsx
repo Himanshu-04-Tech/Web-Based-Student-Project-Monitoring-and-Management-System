@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,23 +10,35 @@ function Login() {
   const navigate = useNavigate(); // ✅ inside component
 
   const handleLogin = async () => {
-    try {
-      const res = await API.post("/auth/login", {
-        email,
-        password,
-      });
+  try {
+    const res = await API.post("/auth/login", {
+      email,
+      password,
+    });
 
-      // store token
-      localStorage.setItem("token", res.data.token);
+    console.log("LOGIN RESPONSE:", res.data); // 🔥 DEBUG
 
-      // redirect
-      navigate("/dashboard");
+    localStorage.setItem("token", res.data.token);
 
-    } catch (err) {
-      console.error(err);
-      alert("Login Failed");
+    // ✅ SAFE ACCESS
+    const role = res.data.user?.role;
+
+    if (!role) {
+      alert("Login failed: role not found");
+      return;
     }
-  };
+
+    if (role === "FACULTY") {
+      navigate("/faculty/FacultyDashboard");    
+    } else {
+      navigate("/dashboard");
+    }
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    alert("Login Failed");
+  }
+};;
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -54,6 +67,12 @@ function Login() {
         >
           Login
         </button>
+        <p className="mt-4 text-center">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-blue-500">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
   );

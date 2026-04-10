@@ -1,45 +1,33 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// Auth
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import JoinGroup from "./pages/JoinGroup";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import CreateProject from "./pages/CreateProject";
+import Register from "./pages/Register";
+
+// Faculty
+import FacultyLayout from "./components/faculty/FacultyLayout";
+import FacultyDashboard from "./pages/faculty/FacultyDashboard";
+import FacultyTeams from "./pages/faculty/FacultyTeams";
+import TeamDetails from "./pages/TeamDetails.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Route */}
+
+        {/* PUBLIC */}
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* Protected Dashboard */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        {/* FACULTY */}
+        <Route path="/faculty" element={<FacultyLayout />}>
+          <Route index element={<FacultyDashboard />} />
+          <Route path="FacultyDashboard" element={<FacultyDashboard />} />
+          <Route path="FacultyTeams" element={<FacultyTeams />} />  
 
-        {/* Protected Join Group */}
-        <Route
-          path="/join-group"
-          element={
-            <ProtectedRoute>
-              <JoinGroup />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/create-project"
-          element={
-            <ProtectedRoute>
-              <CreateProject />
-            </ProtectedRoute>
-          }
-        />
+        </Route>
+          <Route path="/team/:id" element={<TeamDetails />} />
+
       </Routes>
     </BrowserRouter>
   );

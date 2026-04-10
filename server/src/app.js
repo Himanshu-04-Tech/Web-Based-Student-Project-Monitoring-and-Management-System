@@ -44,20 +44,19 @@ app.get(
 );
 
 const divisionRoutes = require("./routes/divisionRoutes");
-
 app.use("/api/divisions", divisionRoutes);
-const batchRoutes = require("./routes/batchRoutes");
 
+const batchRoutes = require("./routes/batchRoutes");
 app.use("/api/batches", batchRoutes);
 
-console.log("divisionRoutes:", typeof divisionRoutes);
-console.log("batchRoutes:", typeof batchRoutes);
+// console.log("divisionRoutes:", typeof divisionRoutes);
+// console.log("batchRoutes:", typeof batchRoutes);
 
 const studentRoutes = require("./routes/studentRoutes");
 app.use("/api/students", studentRoutes);
 
 const groupRoutes = require("./routes/groupRoutes");
-app.use("/api/groups", groupRoutes);
+app.use("/api/group", groupRoutes);
 
 
 const projectRoutes = require("./routes/projectRoutes");

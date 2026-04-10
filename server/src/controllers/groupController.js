@@ -4,9 +4,12 @@ const prisma = new PrismaClient();
 // CREATE GROUP
 exports.createGroup = async (req, res) => {
   try {
-    const { name, batchId, purpose } = req.body;
+    let { year, branch, division, groupNumber, purpose } = req.body;
 
-    if (!name || !batchId || !purpose) {
+    if (req.user.role !== "FACULTY") {
+      return res.status(403).json({ message: "Only faculty can create groups" });
+    }
+    if (!year || !branch || !division || !groupNumber || !purpose) {
       return res.status(400).json({
         message: "All fields required",
       });
@@ -24,10 +27,30 @@ exports.createGroup = async (req, res) => {
 
       if (!existing) exists = false;
     }
+
+    const name = `${year}-${branch}-${division}-${groupNumber}`;
+    const existingGroup = await prisma.group.findFirst({
+      where: {
+        year,
+        branch,
+        division,
+        groupNumber,
+        purpose,
+      },
+    });
+
+    if (existingGroup) {
+      return res.status(400).json({
+        message: "Group already exists ⚠️",
+      });
+    }
     const group = await prisma.group.create({
       data: {
         name,
-        batchId: Number(batchId),
+        year,
+        branch,
+        division,
+        groupNumber,
         purpose,
         joinCode,
       },
@@ -67,18 +90,10 @@ function generateJoinCode(length = 7) {
 // GET ALL GROUPS
 exports.getGroups = async (req, res) => {
   try {
-    const groups = await prisma.group.findMany({
-      include: {
-        batch: {
-          include: {
-            division: true,
-          },
-        },
-      },
-    });
-
+    const groups = await prisma.group.findMany();
     res.json(groups);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error fetching groups" });
   }
 };
@@ -142,5 +157,28 @@ exports.getMyGroup = async (req, res) => {
       message: "Error fetching group",
     });
   }
-  
+
+};
+exports.getGroupById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const group = await prisma.group.findUnique({
+      where: { id },
+      include: {
+        project: true,
+        users: true, // make sure relation exists
+        tasks: true,   // make sure relation exists
+      },
+    });
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    res.json(group);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching group details" });
+  }
 };
