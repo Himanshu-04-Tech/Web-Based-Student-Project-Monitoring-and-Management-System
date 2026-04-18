@@ -1,69 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
-exports.createStudent = async (req, res) => {
-  try {
-    const { name, email, batchId } = req.body;
-
-    if (!name || !email || !batchId) {
-      return res.status(400).json({
-        message: "All fields required",
-      });
-    }
-
-    const student = await prisma.student.create({
-      data: {
-        name,
-        email,
-        batchId: Number(batchId),
-      },
-    });
-
-    return res.status(201).json({
-      message: "Student created",
-      data: student,
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    if (error.code === "P2002") {
-      return res.status(400).json({
-        message: "Email already exists",
-      });
-    }
-
-    if (error.code === "P2003") {
-      return res.status(400).json({
-        message: "Invalid batchId",
-      });
-    }
-
-    return res.status(500).json({
-      message: "Internal server error",
-    });
-  }
-};
-exports.getStudents = async (req, res) => {
-  try {
-    const students = await prisma.student.findMany({
-      include: {
-        batch: {
-          include: {
-            division: true,
-          },
-        },
-      },
-    });
-
-    res.json(students);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching students" });
-  }
-};
+const authMiddleware = require("../middleware/middlewareAuth");
 exports.joinGroupByCode = async (req, res) => {
   try {
-    const { studentId, joinCode } = req.body;
+    const studentId = req.user.id;
+    const { joinCode } = req.body;
 
     if (!studentId || !joinCode) {
       return res.status(400).json({
@@ -71,6 +12,7 @@ exports.joinGroupByCode = async (req, res) => {
       });
     }
 
+    // 1. Find group
     const group = await prisma.group.findUnique({
       where: { joinCode },
     });
@@ -81,16 +23,33 @@ exports.joinGroupByCode = async (req, res) => {
       });
     }
 
-    const student = await prisma.student.update({
-      where: { id: Number(studentId) },
+    // 2. Check already joined
+    const existing = await prisma.studentGroup.findUnique({
+      where: {
+        studentId_groupId: {
+          studentId: Number(studentId),
+          groupId: group.id,
+        },
+      },
+    });
+
+    if (existing) {
+      return res.status(400).json({
+        message: "Already joined this group",
+      });
+    }
+
+    // 3. Create relation
+    const join = await prisma.studentGroup.create({
       data: {
+        studentId: Number(studentId),
         groupId: group.id,
       },
     });
 
     res.json({
       message: "Joined group successfully",
-      data: student,
+      data: join,
     });
 
   } catch (error) {
@@ -98,32 +57,41 @@ exports.joinGroupByCode = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-exports.assignStudentToGroup = async (req, res) => {
-  try {
-    const { studentId, groupId } = req.body;
+exports.getStudentGroups = async (req, res) => {
+  const studentId = req.user.id;
+  console.log("USER:", req.user);
 
-    if (!studentId || !groupId) {
-      return res.status(400).json({
-        message: "studentId and groupId required",
-      });
+  const groups = await prisma.studentGroup.findMany({
+    where: { studentId },
+    include: {
+      group: {
+        include: {
+          faculty: true,
+          students: true
+        }
+      }
     }
+  });
 
-    const student = await prisma.student.update({
-      where: { id: Number(studentId) },
-      data: {
-        groupId: Number(groupId),
-      },
-    });
+  res.json(groups);
+};
+exports.getStudentTasks = async (req, res) => {
+  const studentId = req.user.id;
 
-    res.json({
-      message: "Student assigned manually",
-      data: student,
-    });
+  const studentGroups = await prisma.studentGroup.findMany({
+    where: { studentId },
+    select: { groupId: true }
+  });
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Internal server error",
-    });
-  }
+  const groupIds = studentGroups.map(g => g.groupId);
+
+  const tasks = await prisma.task.findMany({
+    where: {
+      groupId: { in: groupIds },
+      status: "pending"
+    },
+    include: { group: true }
+  });
+
+  res.json(tasks);
 };

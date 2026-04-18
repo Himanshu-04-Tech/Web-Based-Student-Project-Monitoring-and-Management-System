@@ -23,7 +23,7 @@ export default function CreateTeamModal({ isOpen, onClose, onSuccess }) {
 
     try {
       await API.post("/group/create", form);
-      alert("Team Created ✅");
+      alert("Team Created ");
       onSuccess();
       onClose();
     } catch (err) {

@@ -26,14 +26,14 @@ exports.createBatch = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    // ✅ Handle Prisma Foreign Key Error
+    //  Handle Prisma Foreign Key Error
     if (error.code === "P2003") {
       return res.status(400).json({
         message: "Invalid divisionId (division does not exist)",
       });
     }
 
-    // ✅ Handle duplicate (if you add unique later)
+    // Handle duplicate 
     if (error.code === "P2002") {
       return res.status(400).json({
         message: "Batch already exists",

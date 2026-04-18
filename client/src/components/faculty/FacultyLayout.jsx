@@ -3,9 +3,9 @@ import Navbar from "./Navbar";
 
 export default function FacultyLayout() {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="p-4">
+      <div className="w-full px-6 py-4">
         <Outlet />
       </div>
     </div>

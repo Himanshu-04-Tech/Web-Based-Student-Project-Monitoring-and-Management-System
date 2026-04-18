@@ -7,7 +7,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate(); // ✅ inside component
+  const navigate = useNavigate(); 
 
   const handleLogin = async () => {
   try {
@@ -16,11 +16,10 @@ function Login() {
       password,
     });
 
-    console.log("LOGIN RESPONSE:", res.data); // 🔥 DEBUG
+    console.log("LOGIN RESPONSE:", res.data); 
 
     localStorage.setItem("token", res.data.token);
 
-    // ✅ SAFE ACCESS
     const role = res.data.user?.role;
 
     if (!role) {
@@ -30,15 +29,15 @@ function Login() {
 
     if (role === "FACULTY") {
       navigate("/faculty/FacultyDashboard");    
-    } else {
-      navigate("/dashboard");
+    } else if(role === "STUDENT"){
+      navigate("/student/dashboard");
     }
 
   } catch (err) {
-    console.error(err.response?.data || err.message);
+    console.error(err.res?.data || err.message);
     alert("Login Failed");
   }
-};;
+};
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">

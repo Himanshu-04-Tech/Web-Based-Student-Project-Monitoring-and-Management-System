@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // 1️⃣ Check if user exists
+        //  Check if user exists
         const user = await prisma.user.findUnique({
             where: { email }
         });
@@ -64,14 +64,14 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: "User not found" });
         }
 
-        // 2️⃣ Compare password
+        //  Compare password
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // 3️⃣ Generate token
+        //  Generate token
         const token = jwt.sign(
             {
                 userId: user.id,
@@ -88,7 +88,7 @@ exports.login = async (req, res) => {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role, // 🔥 THIS IS REQUIRED
+                role: user.role, 
             }
         });;
 

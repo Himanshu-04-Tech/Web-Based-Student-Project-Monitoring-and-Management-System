@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-// ================= VERIFY TOKEN =================
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
@@ -19,7 +18,7 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-// ================= ROLE AUTH =================
+// Role Authentication 
 const allowRoles = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
@@ -29,7 +28,6 @@ const allowRoles = (...roles) => {
     };
 };
 
-// ✅ Proper Export
 module.exports = {
     verifyToken,
     allowRoles

@@ -26,6 +26,7 @@ model User {
   managedDivisions Division[]   @relation("FacultyDivisions")
   group            Group?       @relation("GroupStudents", fields: [groupId], references: [id])
   groupId          Int?
+  groups           Group[] 
 }
 
 model Student {
@@ -64,15 +65,30 @@ model Group {
   branch      String
   division    String
   groupNumber String
+  purpose     ProjectType
+  joinCode    String      @unique
 
-  purpose  ProjectType
-  joinCode String      @unique
+  tasks Task[]
 
   users      User[]       @relation("GroupStudents")
   attendance Attendance[]
   project    Project?
   Student    Student[]
+  facultyId   Int
+  faculty     User    @relation(fields: [facultyId], references: [id])
+
+
   @@unique([year, branch, division, groupNumber, purpose])
+}
+
+model Task {
+  id       Int      @id @default(autoincrement())
+  title    String
+  deadline DateTime
+  groupId Int
+  completed Boolean  @default(false)
+  
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 enum ProjectType {

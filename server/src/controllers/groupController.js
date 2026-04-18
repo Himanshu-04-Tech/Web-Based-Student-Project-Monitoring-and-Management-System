@@ -17,7 +17,6 @@ exports.createGroup = async (req, res) => {
     let joinCode;
     let exists = true;
 
-    // 🔥 ensure unique code
     while (exists) {
       joinCode = generateJoinCode();
 
@@ -53,6 +52,7 @@ exports.createGroup = async (req, res) => {
         groupNumber,
         purpose,
         joinCode,
+        facultyId: req.user.userId,
       },
     });
 
@@ -76,6 +76,20 @@ exports.createGroup = async (req, res) => {
   }
 };
 
+exports.deleteGroup = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    await prisma.group.delete({
+      where: { id },
+    });
+
+    res.json({ message: "Group deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting group" });
+  }
+};
 function generateJoinCode(length = 7) {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -90,7 +104,13 @@ function generateJoinCode(length = 7) {
 // GET ALL GROUPS
 exports.getGroups = async (req, res) => {
   try {
-    const groups = await prisma.group.findMany();
+    const groups = await prisma.group.findMany(
+      {
+        where: {
+          facultyId: req.user.userId,
+        },
+      }
+    );
     res.json(groups);
   } catch (error) {
     console.error(error);
@@ -100,7 +120,7 @@ exports.getGroups = async (req, res) => {
 exports.joinGroup = async (req, res) => {
   try {
     const { joinCode } = req.body;
-    const userId = req.user.userId; // ✅ FIXED
+    const userId = req.user.userId;
 
     const group = await prisma.group.findUnique({
       where: { joinCode },
@@ -118,13 +138,13 @@ exports.joinGroup = async (req, res) => {
     res.json({ message: "Joined group successfully" });
 
   } catch (err) {
-    console.error(err); // ✅ ADD THIS
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
 exports.getMyGroup = async (req, res) => {
   try {
-    const userId = req.user.userId; // from JWT
+    const userId = req.user.userId;
     console.log("req.user:", req.user);
 
     const user = await prisma.user.findUnique({
@@ -152,7 +172,7 @@ exports.getMyGroup = async (req, res) => {
     res.json(user.group);
 
   } catch (error) {
-    console.error(error); // ✅ VERY IMPORTANT
+    console.error(error);
     res.status(500).json({
       message: "Error fetching group",
     });
@@ -163,18 +183,26 @@ exports.getGroupById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    const group = await prisma.group.findUnique({
-      where: { id },
+    const group = await prisma.group.findFirst({
+      where: {
+        id,
+        facultyId: req.user.userId,
+      },
       include: {
         project: true,
-        users: true, // make sure relation exists
-        tasks: true,   // make sure relation exists
+        users: true,
+        tasks: true,
       },
     });
 
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
+      
+    // if (group.facultyId !== req.user.userId) {
+    //   return res.status(403).json({ message: "Unauthorized" });
+    // }
+    
 
     res.json(group);
   } catch (err) {

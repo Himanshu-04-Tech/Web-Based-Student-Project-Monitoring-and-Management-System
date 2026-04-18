@@ -25,14 +25,14 @@ app.listen(PORT, () => {
 
 //temporarily
 const { verifyToken, allowRoles } = require("./middleware/middlewareAuth");
-app.get(
-  "/api/faculty/dashboard",
-  verifyToken,
-  allowRoles("FACULTY"),
-  (req, res) => {
-    res.json({ message: "Welcome Faculty Dashboard" });
-  }
-);
+// app.get(
+//   "/api/faculty/dashboard",
+//   verifyToken,
+//   allowRoles("FACULTY"),
+//   (req, res) => {
+//     res.json({ message: "Welcome Faculty Dashboard" });
+//   }
+// );
 
 app.get(
   "/api/student/dashboard",
@@ -43,8 +43,8 @@ app.get(
   }
 );
 
-const divisionRoutes = require("./routes/divisionRoutes");
-app.use("/api/divisions", divisionRoutes);
+const facultyRoutes = require("./routes/facultyRoutes");
+app.use("/api/faculty", facultyRoutes);
 
 const batchRoutes = require("./routes/batchRoutes");
 app.use("/api/batches", batchRoutes);
@@ -64,3 +64,9 @@ app.use("/api/projects", projectRoutes);
 
 const attendanceRoutes = require("./routes/attendanceRoutes");
 app.use("/api/attendance", attendanceRoutes);
+
+const taskRoutes = require("./routes/taskRoutes");
+app.use("/api/task", require("./routes/taskRoutes"));
+
+// const taskRoutes = require("./routes/taskRoutes");
+// app.use("/api/task", taskRoutes);
