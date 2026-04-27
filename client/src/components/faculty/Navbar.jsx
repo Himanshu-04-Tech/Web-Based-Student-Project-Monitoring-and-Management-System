@@ -1,67 +1,46 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import API from "../../api/axios";
-// import Profile from "./pages/Profile";
+import styles from "./FacultyNavbar.module.css";
 
-export default function Navbar() {
+export default function FacultyNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const isActive = (path) => location.pathname.startsWith(path);
 
-  const navItems = [
-    { name: "Dashboard", path: "/faculty/FacultyDashboard" },
-    { name: "Teams", path: "/faculty/FacultyTeams" },
-    // { name: "Tasks", path: "/faculty/FacultyTasks" },
-  ];
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await API.get("/auth/me");
-        setUser(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchUser();
-  }, []);
   return (
-    <div className="h-16 bg-white shadow flex items-center justify-between px-6">
-      {/* LEFT: Logo */}
-      <div className="flex items-center gap-8">
-        <h1 className="text-xl font-bold text-blue-600">Projexis</h1>
+    <nav className={styles.navbar}>
+      <div className={styles.inner}>
+        {/* BRAND */}
+        <div className={styles.brand} onClick={() => navigate("/faculty/FacultyDashboard")}>
+          <div className={styles.brandIcon}>P</div>
+          <span className={styles.brandName}>Projexis</span>
+        </div>
 
         {/* NAV LINKS */}
-        <div className="flex gap-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`font-medium ${
-                location.pathname.startsWith(item.path)
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-600 hover:text-black"
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+        <div className={styles.links}>
+          <Link
+            to="/faculty/FacultyDashboard"
+            className={`${styles.link} ${isActive("/faculty/FacultyDashboard") || location.pathname === "/faculty" ? styles.active : ""}`}
+          >
+            <span className={styles.linkIcon}>⊞</span>
+            Dashboard
+          </Link>
+          <Link
+            to="/faculty/FacultyTeams"
+            className={`${styles.link} ${isActive("/faculty/FacultyTeams") || isActive("/faculty/team") ? styles.active : ""}`}
+          >
+            <span className={styles.linkIcon}>◈</span>
+            Teams
+          </Link>
+        </div>
+
+        {/* RIGHT — PROFILE */}
+        <div className={styles.right}>
+          <button className={styles.profileBtn} onClick={() => navigate("/profile")}>
+            <div className={styles.avatar}>F</div>
+            <span className={styles.profileLabel}>Faculty</span>
+          </button>
         </div>
       </div>
-
-      {/* RIGHT: Profile */}
-      <div className="flex items-center gap-4">
-        <button className="text-gray-600">🔔</button>
-
-        <div
-          onClick={() => navigate("/profile")}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <div className="w-10 h-10 rounded-full bg-gray-300"></div>
-          <span>Faculty</span>
-        </div>
-      </div>
-    </div>
+    </nav>
   );
 }

@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.header { margin-bottom: 2rem; }
+
+.title {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.subtitle { color: #64748b; font-size: 0.95rem; margin: 0; }
+
+/* STAT CARDS */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.statCard {
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem;
+  opacity: 0.75;
+}
+
+.statValue {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.statBlue  { background: #eff6ff; color: #1d4ed8; }
+.statAmber { background: #fffbeb; color: #b45309; }
+.statRed   { background: #fef2f2; color: #dc2626; }
+.statGreen { background: #f0fdf4; color: #16a34a; }
+
+/* TWO COL LAYOUT */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .twoCol { grid-template-columns: 1fr; }
+}
+
+/* PANEL */
+.panel {
+  background: white;
+  border-radius: 16px;
+  border: 1.5px solid #e2e8f0;
+  padding: 1.5rem;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.panelTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.panelLink {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.taskCount {
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+/* TEAM LIST */
+.teamList { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.teamRow:hover { background: #f8fafc; }
+
+.teamName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #0f172a;
+  margin: 0 0 0.2rem;
+}
+
+.teamMeta { font-size: 0.78rem; color: #94a3b8; margin: 0; }
+
+.teamProgress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.miniBar {
+  width: 64px;
+  height: 5px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.miniBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  border-radius: 99px;
+}
+
+.pct { font-size: 0.75rem; color: #94a3b8; width: 28px; text-align: right; }
+
+/* TASK LIST */
+.taskList { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.taskDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563eb;
+  flex-shrink: 0;
+}
+
+.taskInfo { flex: 1; min-width: 0; }
+
+.taskTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #0f172a;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.taskGroup { font-size: 0.75rem; color: #94a3b8; margin: 0; }
+
+.deadlineBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.overdue  { background: #fef2f2; color: #dc2626; }
+.dueToday { background: #fff7ed; color: #ea580c; }
+.dueSoon  { background: #fffbeb; color: #b45309; }
+.dueOk    { background: #f0fdf4; color: #16a34a; }
+
+/* EMPTY / ALL DONE */
+.empty { color: #94a3b8; font-size: 0.875rem; text-align: center; padding: 2rem 0; }
+
+.allDone {
+  text-align: center;
+  padding: 2rem 0;
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* LOADING */
+.loadingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  color: #94a3b8;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

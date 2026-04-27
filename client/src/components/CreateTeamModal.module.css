@@ -1,0 +1,145 @@
+/* CreateTeamModal.module.css */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Overlay ──────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 25, 22, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  backdrop-filter: blur(2px);
+}
+
+/* ── Modal box ────────────────────────────────────────── */
+.modal {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 420px;
+  padding: 1.75rem;
+  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  font-family: 'DM Sans', sans-serif;
+  position: relative;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Modal header ─────────────────────────────────────── */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.modalTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1916;
+  letter-spacing: -0.01em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modalTitle::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8b77e8;
+}
+
+.closeBtn {
+  background: rgba(26, 25, 22, 0.06);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #555350;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  background: rgba(26, 25, 22, 0.12);
+  color: #1a1916;
+}
+
+/* ── Field label ──────────────────────────────────────── */
+.fieldLabel {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #888680;
+  margin-bottom: 0.35rem;
+}
+
+/* ── Select ───────────────────────────────────────────── */
+.select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.85rem;
+  border: 0.5px solid rgba(26, 25, 22, 0.15);
+  border-radius: 10px;
+  background: #faf9f7;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  color: #1a1916;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23888680' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #8b77e8;
+  box-shadow: 0 0 0 3px rgba(139, 119, 232, 0.12);
+}
+
+.select option[value=""] {
+  color: #aaa9a6;
+}
+
+/* ── Submit button ────────────────────────────────────── */
+.submitBtn {
+  width: 100%;
+  background: #1a1916;
+  color: #f0ede8;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  transition: background 0.15s, transform 0.12s;
+  letter-spacing: 0.01em;
+}
+
+.submitBtn:hover {
+  background: #3a3936;
+  transform: translateY(-1px);
+}
+
+.submitBtn:active {
+  transform: translateY(0);
+}

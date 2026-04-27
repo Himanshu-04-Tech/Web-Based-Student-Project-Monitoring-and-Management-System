@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -22,11 +19,10 @@ model User {
   createdAt DateTime @default(now())
 
   // Relations
-  attendance       Attendance[]
-  managedDivisions Division[]   @relation("FacultyDivisions")
-  group            Group?       @relation("GroupStudents", fields: [groupId], references: [id])
-  groupId          Int?
-  groups           Group[] 
+  createdGroups Group[]        @relation("FacultyGroups") // Faculty creates groups
+  memberships   StudentGroup[] // Student joins groups
+  divisions     Division[]     @relation("FacultyDivisions") // Faculty manages divisions
+  attendance    Attendance[]
 }
 
 model Student {
@@ -36,8 +32,6 @@ model Student {
   batchId   Int
   batch     Batch    @relation(fields: [batchId], references: [id])
   createdAt DateTime @default(now())
-  group     Group?   @relation(fields: [groupId], references: [id])
-  groupId   Int?
 }
 
 model Batch {
@@ -49,17 +43,15 @@ model Batch {
 }
 
 model Division {
-  id   Int    @id @default(autoincrement())
-  name String // e.g. "A", "B"
-
-  faculty   User @relation("FacultyDivisions", fields: [facultyId], references: [id])
+  id        Int     @id @default(autoincrement())
+  name      String // e.g. "A", "B"
   facultyId Int
-
-  batches Batch[]
+  faculty   User    @relation("FacultyDivisions", fields: [facultyId], references: [id])
+  batches   Batch[]
 }
 
 model Group {
-  id          Int    @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   year        String
   branch      String
@@ -68,27 +60,38 @@ model Group {
   purpose     ProjectType
   joinCode    String      @unique
 
-  tasks Task[]
+  // Faculty who created this group
+  facultyId Int
+  faculty   User @relation("FacultyGroups", fields: [facultyId], references: [id])
 
-  users      User[]       @relation("GroupStudents")
+  tasks      Task[]
   attendance Attendance[]
   project    Project?
-  Student    Student[]
-  facultyId   Int
-  faculty     User    @relation(fields: [facultyId], references: [id])
-
+  students   StudentGroup[] // Students in this group (via join table)
 
   @@unique([year, branch, division, groupNumber, purpose])
 }
 
-model Task {
-  id       Int      @id @default(autoincrement())
-  title    String
-  deadline DateTime
+// Explicit join table — one student can be in multiple groups
+model StudentGroup {
+  id      Int @id @default(autoincrement())
+  userId  Int
   groupId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId]) // prevent duplicate joins
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  deadline  DateTime
+  groupId   Int
   completed Boolean  @default(false)
-  
-  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 enum ProjectType {
@@ -100,12 +103,10 @@ model Project {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  deadline    DateTime
   createdAt   DateTime @default(now())
 
-  group   Group @relation(fields: [groupId], references: [id])
-  groupId Int   @unique // ensures one project per group
-
+  groupId  Int        @unique // one project per group
+  group    Group      @relation(fields: [groupId], references: [id])
   progress Progress[]
 }
 
@@ -114,8 +115,8 @@ model Progress {
   details   String
   createdAt DateTime @default(now())
 
-  project   Project @relation(fields: [projectId], references: [id])
   projectId Int
+  project   Project @relation(fields: [projectId], references: [id])
 }
 
 model Attendance {
@@ -123,9 +124,8 @@ model Attendance {
   date   DateTime @default(now())
   status String // "PRESENT" or "ABSENT"
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
   groupId Int
   group   Group @relation(fields: [groupId], references: [id])
 }

@@ -5,12 +5,16 @@ const prisma = new PrismaClient();
 
 exports.getFacultyDashboard = async (req, res) => {
   try {
-    const facultyId = req.user.userId; // ✅ FIX
+    const facultyId = req.user.userId;
 
     const teams = await prisma.group.findMany({
       where: { facultyId },
       include: {
-        users: true,   // ✅ FIX
+        students: {          // ✅ was "users" — now use the StudentGroup join table
+          include: {
+            user: true       // include actual user data if needed
+          }
+        },
         tasks: true
       }
     });
@@ -20,7 +24,7 @@ exports.getFacultyDashboard = async (req, res) => {
 
     const formattedTeams = teams.map(team => {
       const teamTasks = team.tasks.length;
-      const doneTasks = team.tasks.filter(t => t.completed).length; // ✅ FIX
+      const doneTasks = team.tasks.filter(t => t.completed).length;
 
       totalTasks += teamTasks;
       completedTasks += doneTasks;
@@ -30,17 +34,16 @@ exports.getFacultyDashboard = async (req, res) => {
 
       return {
         name: team.name,
-        members: team.users.length,
+        memberCount: team.students.length,  // ✅ was team.users.length
+        totalTasks: teamTasks,
+        completedTasks: doneTasks,
         progress
       };
     });
 
     const pendingTasks = totalTasks - completedTasks;
-    console.log("Logged in faculty:", req.user.userId);
 
-    // 🔥 ADD EXTRA DATA FOR DASHBOARD
     const upcomingDeadlines = [];
-
     teams.forEach(team => {
       team.tasks.forEach(task => {
         if (!task.completed) {
@@ -59,9 +62,9 @@ exports.getFacultyDashboard = async (req, res) => {
       completedTasks,
       pendingTasks,
       teams: formattedTeams,
-      deadlines: upcomingDeadlines.slice(0, 5), // limit
+      deadlines: upcomingDeadlines.slice(0, 5),
       alerts: pendingTasks > 0 ? [`${pendingTasks} tasks pending`] : [],
-      activity: ["Dashboard loaded"] // simple for now
+      activity: ["Dashboard loaded"]
     });
 
   } catch (error) {

@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 //student
 import StudentDashboard from "./pages/student/studentDashboard";
 import StudentTeams from "./pages/student/studentTeams";
+import StudentTeamDetails from "./pages/student/StudentTeamDetails";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/student/teams" element={<StudentTeams />} />
+          <Route path="/student/team/:id" element={<StudentTeamDetails />} />
         
       </Routes>
     </BrowserRouter>

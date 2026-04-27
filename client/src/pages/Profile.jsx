@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import styles from "./Profile.module.css";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -8,14 +9,11 @@ export default function Profile() {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   const handleChangePassword = async () => {
     try {
-      await API.put("/auth/change-password", {
-        oldPassword,
-        newPassword,
-      });
-
+      await API.put("/auth/change-password", { oldPassword, newPassword });
       alert("Password updated successfully");
       setShowPasswordModal(false);
     } catch (err) {
@@ -23,14 +21,21 @@ export default function Profile() {
     }
   };
 
+  const handleChangeEmail = async () => {
+    try {
+      await API.put("/auth/change-email", { newEmail });
+      alert("Email updated successfully");
+      setShowEmailModal(false);
+    } catch (err) {
+      alert("Error updating email");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // get logged-in user
         const userRes = await API.get("/auth/me");
         setUser(userRes.data);
-
-        // if faculty → fetch dashboard
         if (userRes.data.role === "FACULTY") {
           const dashRes = await API.get("/faculty/dashboard");
           setDashboard(dashRes.data);
@@ -39,47 +44,65 @@ export default function Profile() {
         console.error(err);
       }
     };
-
     fetchData();
   }, []);
 
-  if (!user) return <div className="p-6">Loading...</div>;
+  if (!user) return <div className={styles.loading}>Loading…</div>;
+
+  const initials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex justify-center">
-      <div className="bg-white rounded-2xl shadow p-8 w-full max-w-xl">
+    <div className={styles.page}>
+      <div className={styles.card}>
+
         {/* HEADER */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold">
-            {user.name[0]}
-          </div>
-
-          <div>
-            <h1 className="text-xl font-bold">{user.name}</h1>
-            <p className="text-gray-500">{user.role}</p>
+        <div className={styles.header}>
+          <div className={styles.avatar}>{initials}</div>
+          <div className={styles.headerText}>
+            <h1>{user.name}</h1>
+            <span className={styles.roleBadge}>{user.role}</span>
           </div>
         </div>
 
-        {/* EMAIL */}
-        <div className="mb-4">
-          <p className="text-sm text-gray-500">Email</p>
-          <p className="font-medium">{user.email}</p>
+        {/* INFO FIELDS */}
+        <div className={styles.field}>
+          <p className={styles.fieldLabel}>Email</p>
+          <p className={styles.fieldValue}>{user.email}</p>
         </div>
+
+        {user.branch && (
+          <div className={styles.field}>
+            <p className={styles.fieldLabel}>Branch</p>
+            <p className={styles.fieldValue}>{user.branch}</p>
+          </div>
+        )}
+
+        <div className={styles.divider} />
 
         {/* ACTIONS */}
-        <div className="flex flex-col gap-3 mt-6">
+        <p className={styles.actionsLabel}>Account Settings</p>
+        <div className={styles.actions}>
           <button
             onClick={() => setShowEmailModal(true)}
-            className="bg-gray-200 hover:bg-gray-300 p-3 rounded-lg text-left"
+            className={styles.actionBtn}
           >
+            <span className={styles.actionIcon}>✉</span>
             Change Email
+            <span className={styles.actionArrow}>›</span>
           </button>
 
           <button
             onClick={() => setShowPasswordModal(true)}
-            className="bg-gray-200 hover:bg-gray-300 p-3 rounded-lg text-left"
+            className={styles.actionBtn}
           >
+            <span className={styles.actionIcon}>🔒</span>
             Change Password
+            <span className={styles.actionArrow}>›</span>
           </button>
 
           <button
@@ -87,42 +110,54 @@ export default function Profile() {
               localStorage.removeItem("token");
               window.location.href = "/";
             }}
-            className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-lg"
+            className={styles.logoutBtn}
           >
+            <span className={styles.actionIcon}>↩</span>
             Logout
           </button>
         </div>
       </div>
-      {showPasswordModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center"
-          //   onClick={() => setShowPasswordModal(false)}
-        >
-          <div className="bg-white p-6 rounded-xl w-96">
-            <h2 className="text-lg font-bold mb-4">Change Password</h2>
 
+      {/* CHANGE PASSWORD MODAL */}
+      {showPasswordModal && (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Change Password</h2>
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                className={styles.closeBtn}
+              >
+                ✕
+              </button>
+            </div>
+
+            <label className={styles.inputLabel}>Current Password</label>
             <input
               type="password"
-              placeholder="Old Password"
-              className="w-full border p-2 mb-3 rounded"
+              placeholder="Enter old password"
+              className={styles.input}
               onChange={(e) => setOldPassword(e.target.value)}
             />
 
+            <label className={styles.inputLabel}>New Password</label>
             <input
               type="password"
-              placeholder="New Password"
-              className="w-full border p-2 mb-3 rounded"
+              placeholder="Enter new password"
+              className={styles.input}
               onChange={(e) => setNewPassword(e.target.value)}
             />
 
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowPasswordModal(false)}>
+            <div className={styles.modalFooter}>
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                className={styles.cancelBtn}
+              >
                 Cancel
               </button>
-
               <button
                 onClick={handleChangePassword}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className={styles.confirmBtn}
               >
                 Update
               </button>
@@ -130,30 +165,45 @@ export default function Profile() {
           </div>
         </div>
       )}
+
+      {/* CHANGE EMAIL MODAL */}
       {showEmailModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+          className={styles.overlay}
           onClick={() => setShowEmailModal(false)}
         >
           <div
-            className="bg-white p-6 rounded-xl w-96"
+            className={styles.modal}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-bold mb-4">Change Email</h2>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Change Email</h2>
+              <button
+                onClick={() => setShowEmailModal(false)}
+                className={styles.closeBtn}
+              >
+                ✕
+              </button>
+            </div>
 
+            <label className={styles.inputLabel}>New Email Address</label>
             <input
               type="email"
-              placeholder="New Email"
-              className="w-full border p-2 mb-3 rounded"
+              placeholder="Enter new email"
+              className={styles.input}
               onChange={(e) => setNewEmail(e.target.value)}
             />
 
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowEmailModal(false)}>Cancel</button>
-
+            <div className={styles.modalFooter}>
+              <button
+                onClick={() => setShowEmailModal(false)}
+                className={styles.cancelBtn}
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleChangeEmail}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className={styles.confirmBtn}
               >
                 Update
               </button>
@@ -164,3 +214,4 @@ export default function Profile() {
     </div>
   );
 }
+

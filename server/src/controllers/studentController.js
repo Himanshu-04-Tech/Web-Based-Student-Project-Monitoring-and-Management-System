@@ -1,97 +1,160 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const authMiddleware = require("../middleware/middlewareAuth");
+
 exports.joinGroupByCode = async (req, res) => {
   try {
-    const studentId = req.user.id;
+    const userId = req.user.userId;
     const { joinCode } = req.body;
 
-    if (!studentId || !joinCode) {
-      return res.status(400).json({
-        message: "studentId and joinCode required",
-      });
+    if (!userId || !joinCode) {
+      return res.status(400).json({ message: "studentId and joinCode required" });
     }
 
-    // 1. Find group
-    const group = await prisma.group.findUnique({
-      where: { joinCode },
-    });
+    const group = await prisma.group.findUnique({ where: { joinCode } });
 
     if (!group) {
-      return res.status(404).json({
-        message: "Invalid join code",
-      });
+      return res.status(404).json({ message: "Invalid join code" });
     }
 
-    // 2. Check already joined
-    const existing = await prisma.studentGroup.findUnique({
-      where: {
-        studentId_groupId: {
-          studentId: Number(studentId),
-          groupId: group.id,
-        },
-      },
+    const alreadyJoined = await prisma.studentGroup.findUnique({
+      where: { userId_groupId: { userId, groupId: group.id } }
     });
 
-    if (existing) {
-      return res.status(400).json({
-        message: "Already joined this group",
-      });
+    if (alreadyJoined) {
+      return res.status(400).json({ message: "Already in this group" });
     }
 
-    // 3. Create relation
-    const join = await prisma.studentGroup.create({
-      data: {
-        studentId: Number(studentId),
-        groupId: group.id,
-      },
+    await prisma.studentGroup.create({
+      data: { userId, groupId: group.id }
     });
 
-    res.json({
-      message: "Joined group successfully",
-      data: join,
-    });
+    res.json({ message: "Joined group successfully" });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 exports.getStudentGroups = async (req, res) => {
-  const studentId = req.user.id;
-  console.log("USER:", req.user);
+  try {
+    const userId = req.user.userId;
 
-  const groups = await prisma.studentGroup.findMany({
-    where: { studentId },
-    include: {
-      group: {
-        include: {
-          faculty: true,
-          students: true
-        }
+    const groups = await prisma.group.findMany({
+      where: {
+        students: { some: { userId } }
+      },
+      include: {
+        faculty: { select: { id: true, name: true, email: true } },
+        students: { include: { user: { select: { id: true, name: true, email: true } } } },
+        tasks: true,
+        project: true
       }
-    }
-  });
+    });
 
-  res.json(groups);
+    res.json(groups);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
+
 exports.getStudentTasks = async (req, res) => {
-  const studentId = req.user.id;
+  try {
+    const userId = req.user.userId;
 
-  const studentGroups = await prisma.studentGroup.findMany({
-    where: { studentId },
-    select: { groupId: true }
-  });
+    // ✅ Fixed: use StudentGroup join table instead of old "users" relation
+    const tasks = await prisma.task.findMany({
+      where: {
+        group: {
+          students: {
+            some: { userId }   // ✅ was: users: { some: { id: userId } }
+          }
+        }
+      },
+      include: { group: true },
+      orderBy: { deadline: "asc" }
+    });
 
-  const groupIds = studentGroups.map(g => g.groupId);
+    res.json(tasks || []);
 
-  const tasks = await prisma.task.findMany({
-    where: {
-      groupId: { in: groupIds },
-      status: "pending"
-    },
-    include: { group: true }
-  });
+  } catch (error) {
+    console.error("TASK ERROR:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-  res.json(tasks);
+// GET SINGLE GROUP DETAILS (student view)
+exports.getStudentGroupById = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const groupId = parseInt(req.params.id);
+
+    // Verify student is a member
+    const membership = await prisma.studentGroup.findUnique({
+      where: { userId_groupId: { userId, groupId } }
+    });
+
+    if (!membership) {
+      return res.status(403).json({ message: "You are not a member of this group" });
+    }
+
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      include: {
+        faculty: { select: { id: true, name: true, email: true } },
+        students: { include: { user: { select: { id: true, name: true, email: true } } } },
+        tasks: { orderBy: { deadline: "asc" } },
+        project: true
+      }
+    });
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Flatten members for frontend
+    const response = {
+      ...group,
+      members: group.students.map(sg => sg.user)
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// ADD / UPDATE PROJECT (student adds project to their group)
+exports.upsertProject = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const groupId = parseInt(req.params.id);
+    const { title, description } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({ message: "Title and description are required" });
+    }
+
+    // Verify membership
+    const membership = await prisma.studentGroup.findUnique({
+      where: { userId_groupId: { userId, groupId } }
+    });
+
+    if (!membership) {
+      return res.status(403).json({ message: "Not a member of this group" });
+    }
+
+    const project = await prisma.project.upsert({
+      where: { groupId },
+      update: { title, description },
+      create: { title, description, groupId }
+    });
+
+    res.json({ message: "Project saved", data: project });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };

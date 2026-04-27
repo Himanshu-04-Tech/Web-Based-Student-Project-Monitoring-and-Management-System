@@ -45,7 +45,7 @@ router.get("/:id",verifyToken, allowRoles("FACULTY"), getGroupById);
 router.post("/create", verifyToken, allowRoles("FACULTY"), createGroup);
 
 // Join group
-router.post("/join", verifyToken, allowRoles("STUDENT"), joinGroup);
+// router.post("/join", verifyToken, allowRoles("STUDENT"), joinGroup); 
 
 // Get my group
 router.get("/my", verifyToken, getMyGroup);

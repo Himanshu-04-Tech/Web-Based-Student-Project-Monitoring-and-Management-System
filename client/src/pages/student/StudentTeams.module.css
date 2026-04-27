@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* JOIN BOX */
+.joinBox {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2.5rem;
+  color: white;
+}
+
+.joinTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+}
+
+.joinRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.joinInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.joinInput::placeholder { color: rgba(255,255,255,0.6); }
+.joinInput:focus { border-color: rgba(255,255,255,0.7); }
+
+.joinBtn {
+  padding: 0.75rem 1.75rem;
+  background: white;
+  color: #2563eb;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.joinBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.joinBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* SECTIONS */
+.section { margin-bottom: 2.5rem; }
+
+.sectionTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1.5px solid #e2e8f0;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(37,99,235,0.1);
+  border-color: #93c5fd;
+}
+
+.cardTop { display: flex; justify-content: flex-end; }
+
+.purposeTag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.cardName {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.cardFaculty, .cardMembers {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.progressSection { margin-top: 0.5rem; }
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+
+.progressBar {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+.viewBtn {
+  margin-top: 0.75rem;
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+/* STATES */
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 2px dashed #e2e8f0;
+}
+
+.emptyIcon { font-size: 3rem; margin-bottom: 1rem; }
+.emptyText { font-size: 1.1rem; font-weight: 600; color: #334155; margin: 0 0 0.5rem; }
+.emptyHint { font-size: 0.875rem; color: #94a3b8; margin: 0; }
