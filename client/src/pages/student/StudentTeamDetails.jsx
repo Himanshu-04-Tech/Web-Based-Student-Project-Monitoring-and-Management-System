@@ -8,9 +8,9 @@ export default function StudentTeamDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [team, setTeam] = useState(null);
-  const [status, setStatus] = useState("loading"); // loading | ok | error | notfound
+  const [status, setStatus] = useState("loading");
   const [showProjectModal, setShowProjectModal] = useState(false);
-  const [projectForm, setProjectForm] = useState({ title: "", description: ""});
+  const [projectForm, setProjectForm] = useState({ title: "", description: "" });
   const [savingProject, setSavingProject] = useState(false);
 
   useEffect(() => { fetchTeam(); }, [id]);
@@ -24,7 +24,6 @@ export default function StudentTeamDetails() {
         setProjectForm({
           title: res.data.project.title,
           description: res.data.project.description,
-          // deadline: res.data.project.deadline?.split("T")[0] || ""
         });
       }
       setStatus("ok");
@@ -169,7 +168,6 @@ export default function StudentTeamDetails() {
                 <span className={styles.countBadge}>{team.members?.length || 0}</span>
               </div>
               <div className={styles.memberList}>
-                {/* Faculty */}
                 {team.faculty && (
                   <div className={`${styles.memberRow} ${styles.facultyRow}`}>
                     <div className={`${styles.avatar} ${styles.facultyAvatar}`}>
@@ -204,10 +202,10 @@ export default function StudentTeamDetails() {
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>Tasks</h2>
                 <div className={styles.taskStats}>
-                  <span className={styles.statPill} style={{ background: "#eff6ff", color: "#2563eb" }}>
+                  <span className={styles.statPill} style={{ background: "rgba(37,99,235,0.1)", color: "#60a5fa" }}>
                     {pendingTasks.length} pending
                   </span>
-                  <span className={styles.statPill} style={{ background: "#f0fdf4", color: "#16a34a" }}>
+                  <span className={styles.statPill} style={{ background: "rgba(34,197,94,0.1)", color: "#4ade80" }}>
                     {completedTasksList.length} done
                   </span>
                 </div>
@@ -224,7 +222,6 @@ export default function StudentTeamDetails() {
                 </div>
               ) : (
                 <div className={styles.taskList}>
-                  {/* Pending */}
                   {pendingTasks.length > 0 && (
                     <>
                       <p className={styles.taskGroupLabel}>Pending</p>
@@ -250,7 +247,6 @@ export default function StudentTeamDetails() {
                     </>
                   )}
 
-                  {/* Completed */}
                   {completedTasksList.length > 0 && (
                     <>
                       <p className={styles.taskGroupLabel}>Completed</p>
@@ -304,14 +300,6 @@ export default function StudentTeamDetails() {
               value={projectForm.description}
               onChange={e => setProjectForm(p => ({ ...p, description: e.target.value }))}
             />
-
-            {/* <label className={styles.fieldLabel}>Submission Deadline</label>
-            <input
-              className={styles.fieldInput}
-              type="date"
-              value={projectForm.deadline}
-              onChange={e => setProjectForm(p => ({ ...p, deadline: e.target.value }))}
-            /> */}
 
             <div className={styles.modalFooter}>
               <button className={styles.cancelBtn} onClick={() => setShowProjectModal(false)}>

@@ -42,6 +42,9 @@ const StudentDashboard = () => {
     return { label: `${diff}d left`, cls: styles.dueOk };
   };
 
+  const getInitials = (name) =>
+    name?.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase() || "?";
+
   if (loading) return (
     <StudentLayout>
       <div className={styles.loadingWrap}>
@@ -56,14 +59,14 @@ const StudentDashboard = () => {
       <div className={styles.page}>
         {/* HEADER */}
         <div className={styles.header}>
+          <p className={styles.eyebrow}>Student Portal</p>
           <h1 className={styles.title}>Dashboard</h1>
-          <p className={styles.subtitle}>Track your teams and tasks</p>
         </div>
 
         {/* STAT CARDS */}
         <div className={styles.statsGrid}>
           <div className={`${styles.statCard} ${styles.statBlue}`}>
-            <p className={styles.statLabel}>Teams Joined</p>
+            <p className={styles.statLabel}>Active Teams</p>
             <p className={styles.statValue}>{groups.length}</p>
           </div>
           <div className={`${styles.statCard} ${styles.statAmber}`}>
@@ -84,9 +87,9 @@ const StudentDashboard = () => {
           {/* TEAMS */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>My Teams</h2>
+              <h2 className={styles.panelTitle}>Team Overview</h2>
               <button className={styles.panelLink} onClick={() => navigate("/student/teams")}>
-                View all →
+                {groups.length} teams →
               </button>
             </div>
             {groups.length === 0 ? (
@@ -104,8 +107,11 @@ const StudentDashboard = () => {
                       onClick={() => navigate(`/student/team/${g.id}`)}
                     >
                       <div className={styles.teamInfo}>
-                        <p className={styles.teamName}>{g.name}</p>
-                        <p className={styles.teamMeta}>{g.faculty?.name || "—"} · {g.students?.length || 0} members</p>
+                        <div className={styles.teamAvatar}>{getInitials(g.name)}</div>
+                        <div>
+                          <p className={styles.teamName}>{g.name}</p>
+                          <p className={styles.teamMeta}>{done}/{total} tasks</p>
+                        </div>
                       </div>
                       <div className={styles.teamProgress}>
                         <div className={styles.miniBar}>
@@ -123,7 +129,7 @@ const StudentDashboard = () => {
           {/* TASKS */}
           <div className={styles.panel}>
             <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>Pending Tasks</h2>
+              <h2 className={styles.panelTitle}>Upcoming Deadlines</h2>
               <span className={styles.taskCount}>{pendingTasks.length}</span>
             </div>
             {pendingTasks.length === 0 ? (

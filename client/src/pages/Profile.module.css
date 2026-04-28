@@ -1,13 +1,13 @@
-/* Profile.module.css */
+/* Profile.module.css — Dark theme matching Dashboard */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
 
 /* ── Page ─────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
-  background: #f0ede8;
+  background: #0f1117;
   padding: 2.5rem;
   font-family: 'DM Sans', sans-serif;
-  color: #1a1916;
+  color: #e8e6e1;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -17,13 +17,13 @@
   padding: 2rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: #888680;
+  color: #5a5a6a;
 }
 
 /* ── Main card ────────────────────────────────────────── */
 .card {
-  background: #ffffff;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  background: #181b24;
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
   border-radius: 20px;
   padding: 2rem;
   width: 100%;
@@ -37,14 +37,14 @@
   gap: 1rem;
   margin-bottom: 1.75rem;
   padding-bottom: 1.5rem;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.08);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
 }
 
 .avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #c8b8f5, #8b77e8);
+  background: linear-gradient(135deg, #3d2fa0, #8b77e8);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -58,7 +58,7 @@
 .headerText h1 {
   font-size: 1.15rem;
   font-weight: 600;
-  color: #1a1916;
+  color: #e8e6e1;
   margin: 0 0 3px;
   letter-spacing: -0.01em;
 }
@@ -69,9 +69,9 @@
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  background: rgba(139, 119, 232, 0.1);
-  color: #5c4fcf;
-  border: 0.5px solid rgba(139, 119, 232, 0.22);
+  background: rgba(139, 119, 232, 0.12);
+  color: #8b77e8;
+  border: 0.5px solid rgba(139, 119, 232, 0.25);
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
 }
@@ -86,21 +86,21 @@
   font-weight: 500;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #888680;
+  color: #4a4a5a;
   margin-bottom: 0.3rem;
 }
 
 .fieldValue {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1916;
+  color: #c8c6c1;
   font-family: 'DM Mono', monospace;
 }
 
 /* ── Divider ──────────────────────────────────────────── */
 .divider {
   height: 0.5px;
-  background: rgba(26, 25, 22, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   margin: 1.5rem 0;
 }
 
@@ -110,7 +110,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #aaa9a6;
+  color: #4a4a5a;
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
@@ -138,22 +138,22 @@
   gap: 10px;
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
   border-radius: 12px;
-  background: #faf9f7;
+  background: rgba(255, 255, 255, 0.03);
   font-family: 'DM Sans', sans-serif;
   font-size: 13.5px;
   font-weight: 500;
-  color: #3a3936;
+  color: #9a9aa8;
   cursor: pointer;
   text-align: left;
-  transition: background 0.12s, border-color 0.12s, transform 0.12s;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s, color 0.15s;
 }
 
 .actionBtn:hover {
-  background: rgba(139, 119, 232, 0.06);
+  background: rgba(139, 119, 232, 0.08);
   border-color: rgba(139, 119, 232, 0.25);
-  color: #5c4fcf;
+  color: #9a8ef0;
   transform: translateX(2px);
 }
 
@@ -165,7 +165,7 @@
 .actionArrow {
   margin-left: auto;
   font-size: 13px;
-  color: #ccc9c5;
+  color: #2a2a3a;
 }
 
 /* ── Logout button ────────────────────────────────────── */
@@ -177,41 +177,41 @@
   padding: 0.75rem 1rem;
   border: 0.5px solid rgba(208, 74, 50, 0.2);
   border-radius: 12px;
-  background: rgba(208, 74, 50, 0.06);
+  background: rgba(208, 74, 50, 0.07);
   font-family: 'DM Sans', sans-serif;
   font-size: 13.5px;
   font-weight: 500;
-  color: #8c2c1a;
+  color: #e05c3a;
   cursor: pointer;
   text-align: left;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background 0.15s, border-color 0.15s;
   margin-top: 0.4rem;
 }
 
 .logoutBtn:hover {
-  background: rgba(208, 74, 50, 0.12);
-  border-color: rgba(208, 74, 50, 0.3);
+  background: rgba(208, 74, 50, 0.15);
+  border-color: rgba(208, 74, 50, 0.35);
 }
 
 /* ── Modal overlay ────────────────────────────────────── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(26, 25, 22, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 50;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 /* ── Modal ────────────────────────────────────────────── */
 .modal {
-  background: #ffffff;
+  background: #181b24;
   border-radius: 20px;
   width: 380px;
   padding: 1.75rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   animation: slideUp 0.18s ease;
 }
 
@@ -230,7 +230,7 @@
 .modalTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1916;
+  color: #e8e6e1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -246,13 +246,13 @@
 }
 
 .closeBtn {
-  background: rgba(26, 25, 22, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   width: 28px;
   height: 28px;
   border-radius: 8px;
   font-size: 13px;
-  color: #555350;
+  color: #7a7a8a;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -261,7 +261,7 @@
 }
 
 .closeBtn:hover {
-  background: rgba(26, 25, 22, 0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ── Modal inputs ─────────────────────────────────────── */
@@ -271,19 +271,19 @@
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #888680;
+  color: #4a4a5a;
   margin-bottom: 0.3rem;
 }
 
 .input {
   width: 100%;
   padding: 0.6rem 0.85rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.15);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  background: #faf9f7;
+  background: #0f1117;
   font-family: 'DM Sans', sans-serif;
   font-size: 13.5px;
-  color: #1a1916;
+  color: #e8e6e1;
   margin-bottom: 0.9rem;
   box-sizing: border-box;
   transition: border-color 0.12s, box-shadow 0.12s;
@@ -296,7 +296,7 @@
 }
 
 .input::placeholder {
-  color: #ccc9c5;
+  color: #2a2a3a;
 }
 
 /* ── Modal footer ─────────────────────────────────────── */
@@ -309,35 +309,35 @@
 
 .cancelBtn {
   padding: 0.5rem 1rem;
-  background: rgba(26, 25, 22, 0.06);
-  border: 0.5px solid rgba(26, 25, 22, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 9px;
   font-size: 13px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  color: #555350;
+  color: #7a7a8a;
   cursor: pointer;
   transition: background 0.12s;
 }
 
 .cancelBtn:hover {
-  background: rgba(26, 25, 22, 0.1);
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .confirmBtn {
   padding: 0.5rem 1.2rem;
-  background: #1a1916;
+  background: #8b77e8;
   border: none;
   border-radius: 9px;
   font-size: 13px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  color: #f0ede8;
+  color: #ffffff;
   cursor: pointer;
   transition: background 0.12s, transform 0.1s;
 }
 
 .confirmBtn:hover {
-  background: #3a3936;
+  background: #7b67d8;
   transform: translateY(-1px);
 }

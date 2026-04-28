@@ -76,10 +76,9 @@ const StudentTeams = () => {
     <StudentLayout>
       <div className={styles.page}>
         <div className={styles.header}>
-          <div>
-            <h1 className={styles.title}>My Teams</h1>
-            <p className={styles.subtitle}>Join and manage your project groups</p>
-          </div>
+          <p className={styles.eyebrow}>Student Portal</p>
+          <h1 className={styles.title}>My Teams</h1>
+          <p className={styles.subtitle}>Join and manage your project groups</p>
         </div>
 
         {/* JOIN SECTION */}

@@ -2,9 +2,9 @@ import StudentNavbar from "./studentNavbar";
 
 const StudentLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div >
       <StudentNavbar />
-      <div className="p-6">{children}</div>
+      <div>{children}</div>
     </div>
   );
 };

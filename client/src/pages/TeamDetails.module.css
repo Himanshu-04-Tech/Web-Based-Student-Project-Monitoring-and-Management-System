@@ -1,13 +1,13 @@
-/* TeamDetails.module.css */
+/* TeamDetails.module.css — Dark theme matching Dashboard */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
 
 /* ── Page ─────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
-  background: #f0ede8;
+  background: #0f1117;
   padding: 2rem 2.5rem;
   font-family: 'DM Sans', sans-serif;
-  color: #1a1916;
+  color: #e8e6e1;
 }
 
 /* ── Status messages ──────────────────────────────────── */
@@ -15,14 +15,14 @@
   padding: 2rem 2.5rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: #8c2c1a;
+  color: #e05c3a;
 }
 
 .statusLoading {
   padding: 2rem 2.5rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: #888680;
+  color: #5a5a6a;
 }
 
 /* ── Back button ──────────────────────────────────────── */
@@ -30,9 +30,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ffffff;
-  border: 0.5px solid rgba(26, 25, 22, 0.12);
-  color: #3a3936;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  color: #9a9aa8;
   padding: 0.45rem 1rem;
   border-radius: 10px;
   font-size: 13px;
@@ -40,20 +40,20 @@
   font-weight: 500;
   cursor: pointer;
   margin-bottom: 1.4rem;
-  transition: background 0.12s, transform 0.12s;
+  transition: background 0.15s, transform 0.12s, color 0.15s;
 }
 
 .backBtn:hover {
-  background: rgba(139, 119, 232, 0.06);
+  background: rgba(139, 119, 232, 0.12);
   border-color: rgba(139, 119, 232, 0.3);
-  color: #5c4fcf;
+  color: #ab99f0;
   transform: translateX(-2px);
 }
 
 /* ── Section card ─────────────────────────────────────── */
 .card {
-  background: #ffffff;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  background: #181b24;
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
   border-radius: 16px;
   padding: 1.4rem 1.6rem;
   margin-bottom: 1.2rem;
@@ -61,14 +61,14 @@
 
 /* ── Card section title ───────────────────────────────── */
 .cardSectionTitle {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #555350;
+  color: #5a5a6a;
   margin: 0 0 1rem;
   padding-bottom: 0.7rem;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.07);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -92,9 +92,9 @@
 }
 
 .teamTitle {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #1a1916;
+  color: #f0ede8;
   letter-spacing: -0.02em;
   margin: 0;
   font-family: 'DM Mono', monospace;
@@ -111,45 +111,45 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: rgba(26, 25, 22, 0.07);
-  color: #555350;
+  background: rgba(255, 255, 255, 0.06);
+  color: #7a7a8a;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.09);
 }
 
 .deleteBtnRed {
-  background: rgba(208, 74, 50, 0.08);
-  border: 0.5px solid rgba(208, 74, 50, 0.22);
-  color: #8c2c1a;
+  background: rgba(208, 74, 50, 0.1);
+  border: 0.5px solid rgba(208, 74, 50, 0.25);
+  color: #e05c3a;
   padding: 0.35rem 0.9rem;
   border-radius: 8px;
   font-size: 12px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.12s;
+  transition: background 0.15s;
 }
 
 .deleteBtnRed:hover {
-  background: rgba(208, 74, 50, 0.16);
+  background: rgba(208, 74, 50, 0.2);
 }
 
 .joinCode {
   font-size: 12.5px;
-  color: #aaa9a6;
+  color: #5a5a6a;
   margin: 0.25rem 0;
 }
 
 .joinCodeVal {
   font-family: 'DM Mono', monospace;
-  color: #5c4fcf;
+  color: #8b77e8;
   font-weight: 500;
 }
 
 .teamMeta {
   font-size: 12px;
-  color: #888680;
+  color: #4a4a5a;
   margin-top: 0.4rem;
   letter-spacing: 0.02em;
 }
@@ -158,20 +158,20 @@
 .projectTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1916;
+  color: #e8e6e1;
   margin: 0 0 0.3rem;
 }
 
 .projectDesc {
   font-size: 13.5px;
-  color: #555350;
+  color: #7a7a8a;
   line-height: 1.6;
   margin: 0;
 }
 
 .noData {
   font-size: 13px;
-  color: #aaa9a6;
+  color: #3a3a4a;
   font-style: italic;
 }
 
@@ -181,7 +181,7 @@
   align-items: center;
   gap: 12px;
   padding: 0.65rem 0;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.06);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
 }
 
 .memberRow:last-child {
@@ -192,26 +192,26 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(139, 119, 232, 0.12);
+  background: rgba(139, 119, 232, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  color: #5c4fcf;
+  color: #8b77e8;
   flex-shrink: 0;
 }
 
 .memberName {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1916;
+  color: #d8d6d1;
   margin: 0;
 }
 
 .memberEmail {
   font-size: 12px;
-  color: #aaa9a6;
+  color: #5a5a6a;
   margin: 0;
 }
 
@@ -222,15 +222,15 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 0.7rem;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.07);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
 }
 
 .taskHeaderTitle {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #555350;
+  color: #5a5a6a;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -249,20 +249,20 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  background: rgba(92, 79, 207, 0.1);
-  border: 0.5px solid rgba(92, 79, 207, 0.2);
-  color: #5c4fcf;
+  background: rgba(92, 79, 207, 0.12);
+  border: 0.5px solid rgba(92, 79, 207, 0.25);
+  color: #9a8ef0;
   padding: 0.4rem 0.9rem;
   border-radius: 8px;
   font-size: 12px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.12s;
+  transition: background 0.15s;
 }
 
 .addTaskBtn:hover {
-  background: rgba(92, 79, 207, 0.18);
+  background: rgba(92, 79, 207, 0.22);
 }
 
 /* ── Task row ─────────────────────────────────────────── */
@@ -271,7 +271,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.7rem 0.4rem;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.06);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   transition: background 0.12s;
   gap: 1rem;
@@ -282,25 +282,25 @@
 }
 
 .taskRow:hover {
-  background: rgba(139, 119, 232, 0.03);
+  background: rgba(139, 119, 232, 0.04);
 }
 
 .taskTitle {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1916;
+  color: #d8d6d1;
   margin: 0 0 3px;
 }
 
 .taskTitle.done {
   text-decoration: line-through;
-  color: #aaa9a6;
+  color: #3a3a4a;
   font-weight: 400;
 }
 
 .taskDeadline {
   font-size: 11.5px;
-  color: #aaa9a6;
+  color: #4a4a5a;
   font-family: 'DM Mono', monospace;
   margin: 0;
 }
@@ -324,35 +324,36 @@
 }
 
 .toggleBtn.undo {
-  background: rgba(26, 125, 90, 0.1);
-  color: #0f5c40;
-  border: 0.5px solid rgba(26, 125, 90, 0.2);
+  background: rgba(26, 125, 90, 0.12);
+  color: #3ecf8e;
+  border: 0.5px solid rgba(26, 125, 90, 0.25);
 }
 
 .toggleBtn.undo:hover {
-  background: rgba(26, 125, 90, 0.18);
+  background: rgba(26, 125, 90, 0.22);
 }
 
 .toggleBtn.done {
-  background: rgba(139, 119, 232, 0.1);
-  color: #5c4fcf;
-  border: 0.5px solid rgba(139, 119, 232, 0.2);
+  background: rgba(139, 119, 232, 0.12);
+  color: #9a8ef0;
+  border: 0.5px solid rgba(139, 119, 232, 0.25);
 }
 
 .toggleBtn.done:hover {
-  background: rgba(139, 119, 232, 0.18);
+  background: rgba(139, 119, 232, 0.22);
 }
 
 .dateInput {
   font-size: 11.5px;
   font-family: 'DM Mono', monospace;
   padding: 0.3rem 0.6rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.14);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: #faf9f7;
-  color: #555350;
+  background: #0f1117;
+  color: #7a7a8a;
   cursor: pointer;
   transition: border-color 0.12s;
+  color-scheme: dark;
 }
 
 .dateInput:focus {
@@ -367,7 +368,7 @@
   width: 28px;
   height: 28px;
   border: 0.5px solid rgba(208, 74, 50, 0.2);
-  background: rgba(208, 74, 50, 0.06);
+  background: rgba(208, 74, 50, 0.08);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.12s;
@@ -375,33 +376,33 @@
 }
 
 .taskDeleteBtn:hover {
-  background: rgba(208, 74, 50, 0.14);
+  background: rgba(208, 74, 50, 0.18);
 }
 
 .taskDeleteBtn img {
   width: 13px;
   height: 13px;
-  filter: invert(30%) sepia(80%) saturate(600%) hue-rotate(340deg);
+  filter: invert(50%) sepia(80%) saturate(600%) hue-rotate(320deg);
 }
 
 /* ── Add Task Modal ───────────────────────────────────── */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(26, 25, 22, 0.45);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 50;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .modal {
-  background: #ffffff;
+  background: #181b24;
   border-radius: 20px;
   width: 380px;
   padding: 1.75rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   font-family: 'DM Sans', sans-serif;
   animation: slideUp 0.2s ease;
 }
@@ -414,7 +415,7 @@
 .modalTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1916;
+  color: #e8e6e1;
   margin: 0 0 1.25rem;
   display: flex;
   align-items: center;
@@ -432,15 +433,16 @@
 .modalInput {
   width: 100%;
   padding: 0.6rem 0.85rem;
-  border: 0.5px solid rgba(26, 25, 22, 0.15);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  background: #faf9f7;
+  background: #0f1117;
   font-family: 'DM Sans', sans-serif;
   font-size: 13.5px;
-  color: #1a1916;
+  color: #e8e6e1;
   margin-bottom: 0.9rem;
   box-sizing: border-box;
   transition: border-color 0.12s, box-shadow 0.12s;
+  color-scheme: dark;
 }
 
 .modalInput:focus {
@@ -450,7 +452,7 @@
 }
 
 .modalInput::placeholder {
-  color: #aaa9a6;
+  color: #3a3a4a;
 }
 
 .modalFooter {
@@ -462,35 +464,35 @@
 
 .cancelBtn {
   padding: 0.5rem 1rem;
-  background: rgba(26, 25, 22, 0.06);
-  border: 0.5px solid rgba(26, 25, 22, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 9px;
   font-size: 13px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  color: #555350;
+  color: #7a7a8a;
   cursor: pointer;
   transition: background 0.12s;
 }
 
 .cancelBtn:hover {
-  background: rgba(26, 25, 22, 0.1);
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .confirmBtn {
   padding: 0.5rem 1.2rem;
-  background: #1a1916;
+  background: #8b77e8;
   border: none;
   border-radius: 9px;
   font-size: 13px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  color: #f0ede8;
+  color: #ffffff;
   cursor: pointer;
   transition: background 0.12s, transform 0.1s;
 }
 
 .confirmBtn:hover {
-  background: #3a3936;
+  background: #7b67d8;
   transform: translateY(-1px);
 }
